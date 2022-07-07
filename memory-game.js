@@ -44,15 +44,10 @@ function shuffle(items) {
  */
 
 function createCards(colors) {
-  let count = 0;
   for (let color of colors) {
-    count++;
     const card = document.createElement('div');
     card.classList.add('card', color);
     gameBoard.appendChild(card);
-    if (count === colors.length/2) {
-      gameBoard.appendChild(document.createElement('br'));
-    }
   }
 
   gameBoard.addEventListener('click', pickCard);
