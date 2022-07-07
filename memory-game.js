@@ -12,7 +12,7 @@ const gameBoard = document.getElementById("game");
 const colors = shuffle(COLORS);
 let flippedCards = 0;
 
-createCards(colors);
+createGame();
 
 
 
@@ -100,4 +100,14 @@ function pickCard(e) {
   if (e.target.classList.contains('card')) {
     handleCardClick(e);
   }
+}
+
+function createGame() {
+  let startButton = document.createElement('button');
+  startButton.innerText = 'Start';
+  gameBoard.appendChild(startButton);
+  startButton.addEventListener('click', function() {
+    createCards(colors);
+    startButton.remove();
+  });
 }
