@@ -9,13 +9,16 @@ const COLORS = [
 ];
 
 const gameBoard = document.getElementById("game");
+let startButton = document.createElement('button');
+let scoreBoard = document.createElement('span');
+
 const colors = shuffle(COLORS);
-var gameInfo;
+
+var gameInfo; //a timer for updating score
+
 let flippedCards = 0;
 let score = 0;
 let matched = 0;
-let startButton = document.createElement('button');
-let scoreBoard = document.createElement('span');
 
 
 startButton.innerText = 'START';
@@ -136,7 +139,12 @@ function createScore () {
 
 function winGame() {
   clearInterval(gameInfo);
-  scoreBoard.innerText = "You Win! Score: " + score;
+  matched = 0;
+  if (score < JSON.parse(localStorage.getItem('bestScore'))
+      || JSON.parse(localStorage.getItem('bestScore')) === null) {
+    localStorage.setItem('bestScore', JSON.stringify(score));
+  }
+  scoreBoard.innerText = "You Win! Score: " + score + " Your best score: " + localStorage.getItem('bestScore');
   startButton.innerText = "RESTART"
   gameBoard.appendChild(startButton);
 }
