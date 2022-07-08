@@ -56,19 +56,16 @@ function createCards(colors) {
 /** Flip a card face-up. */
 
 function flipCard(card) {
+    card.classList.replace('card','selected');
     card.style.backgroundColor = card.classList[1];
-    card.classList.add('selected')
     flippedCards++;
 }
 
 /** Flip a card face-down. */
 
 function unFlipCard(card) {
-  setTimeout(function() {
-    card.classList.remove('unflip');
-    card.style.backgroundColor = 'white';
-  }, 600);
-  card.classList.replace('selected','unflip');
+  card.classList.replace('selected', 'card')
+  card.style.backgroundColor = 'white';
 }
 
 /** Handle clicking on a card: this could be first-card or second-card. */
@@ -104,7 +101,7 @@ function pickCard(e) {
 
 function createGame() {
   let startButton = document.createElement('button');
-  startButton.innerText = 'Start';
+  startButton.innerText = 'START';
   gameBoard.appendChild(startButton);
   startButton.addEventListener('click', function() {
     createCards(colors);

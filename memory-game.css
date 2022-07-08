@@ -16,11 +16,11 @@ h1 {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
+  transform-style: preserve-3d;
 
 }
 
-.card {
-  background-color: white;
+#game div{
   border: 1px solid black;
   width: 100px;
   height: 100px;
@@ -28,19 +28,20 @@ h1 {
   display: inline-block;
 }
 
-.selected,
-.match {
-  animation-duration: 0.66s;
-  animation-name: flip;
-  animation-timing-function: ease-in-out;
-  animation-direction: normal;
+.card {
+  background-color: white;
+  transition: background-color 0.66s cubic-bezier(1,-0.44,.29,.85), transform 0.66s ease-in-out;
+  transform: rotateY(0deg);
 }
 
-.unflip {
-  animation-duration: 0.66s;
-  animation-name: unflip;
+.selected,
+.match {
+/*   animation-duration: 0.66s;
+  animation-name: flip;
   animation-timing-function: ease-in-out;
-  animation-direction: normal;
+  animation-direction: normal; */
+  transition: background-color 0.66s cubic-bezier(1,-0.44,.29,.85), transform 0.66s ease-in-out;
+  transform: rotateY(180deg);
 }
 
 
@@ -72,4 +73,16 @@ h1 {
     transform: rotateY(180deg);
     background-color: white;
   }
+}
+
+button {
+  font-family: inherit;
+  font-size: 44px;
+  border-radius: 5px;
+  background-color: #79BAF2;
+  border: 3px solid black;
+}
+
+button:active {
+  background-color: #6AD991;
 }
