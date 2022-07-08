@@ -2,7 +2,7 @@
 
 /** Memory game: find matching pairs of cards and flip both of them. */
 
-const FOUND_MATCH_WAIT_MSECS = 1660;
+const FOUND_MATCH_WAIT_MSECS = 1000;
 const COLORS = [
   "red", "blue", "green", "orange", "purple",
   "red", "blue", "green", "orange", "purple",
@@ -10,8 +10,16 @@ const COLORS = [
 
 const gameBoard = document.getElementById("game");
 const colors = shuffle(COLORS);
+var gameInfo;
 let flippedCards = 0;
+let score = 0;
+let matched = 0;
+let startButton = document.createElement('button');
+let scoreBoard = document.createElement('span');
 
+
+startButton.innerText = 'START';
+gameBoard.appendChild(startButton);
 createGame();
 
 
@@ -56,9 +64,10 @@ function createCards(colors) {
 /** Flip a card face-up. */
 
 function flipCard(card) {
+    flippedCards++;
+    score++;
     card.classList.replace('card','selected');
     card.style.backgroundColor = card.classList[1];
-    flippedCards++;
 }
 
 /** Flip a card face-down. */
@@ -72,21 +81,25 @@ function unFlipCard(card) {
 
 function handleCardClick(evt) {
 
-  if (!evt.target.classList.contains('selected') && !evt.target.classList.contains('match') && flippedCards < 2) {
+  if (!evt.target.classList.contains('selected') && !evt.target.classList.contains('match') &&  flippedCards < 2) {
     flipCard(evt.target);
   }
 
-  if (flippedCards === 2) {
+  if ( flippedCards === 2) {
     let cSelect = document.querySelectorAll('.selected');
 
     if (cSelect[0].classList[1] === cSelect[1].classList[1]) {
       cSelect.forEach(card => card.classList.replace('selected','match'));
       flippedCards = 0;
+      matched += 2;
+        if (matched === colors.length) {
+          winGame();
+        }
     } else {
       gameBoard.removeEventListener('click', pickCard);
       setTimeout(function() {
         cSelect.forEach(card => unFlipCard(card));
-        flippedCards = 0
+         flippedCards = 0
         gameBoard.addEventListener('click', pickCard)
       }, FOUND_MATCH_WAIT_MSECS);
     }
@@ -100,11 +113,30 @@ function pickCard(e) {
 }
 
 function createGame() {
-  let startButton = document.createElement('button');
-  startButton.innerText = 'START';
-  gameBoard.appendChild(startButton);
   startButton.addEventListener('click', function() {
+    let cards = document.querySelectorAll('.match');
+    for (let card of cards) {
+      card.remove();
+    }
+    score = 0;
+    createScore();
     createCards(colors);
     startButton.remove();
   });
+}
+
+function createScore () {
+  let body = document.querySelector('body');
+  scoreBoard.innerText = 'Score: ' + score;
+  body.insertBefore(scoreBoard,gameBoard);
+  gameInfo = setInterval(function () {
+    scoreBoard.innerText = 'Score: ' + score;
+  }, 500);
+}
+
+function winGame() {
+  clearInterval(gameInfo);
+  scoreBoard.innerText = "You Win! Score: " + score;
+  startButton.innerText = "RESTART"
+  gameBoard.appendChild(startButton);
 }
